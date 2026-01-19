@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Game Hub</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background: #111;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+#menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 40px;
+}
+
+.game-btn {
+    background: #222;
+    border: 2px solid #444;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.game-btn:hover {
+    background: #333;
+    border-color: #fff;
+}
+
+/* Fullscreen button style */
+#fullscreenBtn {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 999999;
+    background: green;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    font-size: 18px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div id="menu">
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/refs/heads/main/games.hml')">
+        Bad Time Simulator (Sans Fight)
+    </div>
+
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/refs/heads/main/badmondaysimulator.html')">
+        Bad Monday Simulator
+    </div>
+
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/refs/heads/main/amandatheadventure.html')">
+        Amanda The Adventure
+    </div>
+
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/refs/heads/main/bergentruck.html')">
+        Bergen Truck
+    </div>
+
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/refs/heads/main/minecraft.html')">
+        Minecraft
+    </div>
+
+    <div class="game-btn">Game 6 (Coming Soon)</div>
+    <div class="game-btn">Game 7 (Coming Soon)</div>
+    <div class="game-btn">Game 8 (Coming Soon)</div>
+    <div class="game-btn">Game 9 (Coming Soon)</div>
+    <div class="game-btn">Game 10 (Coming Soon)</div>
+</div>
+
+<!-- Fullscreen Button -->
+<button id="fullscreenBtn" onclick="toggleFullscreen()">⛶</button>
+
+<script>
+/* Save launcher HTML */
+sessionStorage.setItem(
+  "launcherHTML",
+  document.documentElement.outerHTML
+);
+
+/* Generic game loader */
+async function loadGame(url) {
+    try {
+        const res = await fetch(url);
+        const html = await res.text();
+
+        document.open();
+        document.write(html);
+        document.close();
+
+        window.addEventListener("load", () => {
+            injectCloseButton();
+            injectFullscreenButton();
+        });
+
+    } catch (err) {
+        alert("Failed to load game.");
+        console.error(err);
+    }
+}
+
+/* Close button */
+function injectCloseButton() {
+    const btn = document.createElement("button");
+    btn.textContent = "✖";
+    btn.style.cssText = `
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 999999;
+        background: red;
+        color: white;
+        border: none;
+        padding: 8px 14px;
+        font-size: 18px;
+        cursor: pointer;
+    `;
+    btn.onclick = restoreLauncher;
+    document.body.appendChild(btn);
+}
+
+/* Fullscreen button for loaded game */
+function injectFullscreenButton() {
+    if (document.getElementById("fullscreenBtn")) return;
+
+    const btn = document.createElement("button");
+    btn.id = "fullscreenBtn";
+    btn.textContent = "⛶";
+    btn.style.cssText = `
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        z-index: 999999;
+        background: green;
+        color: white;
+        border: none;
+        padding: 8px 14px;
+        font-size: 18px;
+        cursor: pointer;
+    `;
+    btn.onclick = toggleFullscreen;
+    document.body.appendChild(btn);
+}
+
+/* Toggle fullscreen and remove button */
+function toggleFullscreen() {
+    const btn = document.getElementById("fullscreenBtn");
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+            alert(`Error attempting to enable fullscreen: ${err.message}`);
+        });
+    }
+    if (btn) btn.remove();
+}
+
+/* Listen for exiting fullscreen to restore button */
+document.addEventListener("fullscreenchange", () => {
+    if (!document.fullscreenElement) {
+        injectFullscreenButton();
+    }
+});
+
+/* Restore launcher */
+function restoreLauncher() {
+    const html = sessionStorage.getItem("launcherHTML");
+    document.open();
+    document.write(html);
+    document.close();
+
+    // Re-add fullscreen button
+    injectFullscreenButton();
+}
+</script>
+
+</body>
+</html>
