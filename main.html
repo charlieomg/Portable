@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background: #111;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+/* Center password box */
+#passwordWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#passwordWrapper input {
+    padding: 10px;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+#passwordWrapper button {
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    background: green;
+    color: white;
+    border: none;
+}
+
+/* Games menu */
+#menu {
+    display: none; /* hidden until password is correct */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 40px;
+}
+
+.game-btn {
+    background: #222;
+    border: 2px solid #444;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.game-btn:hover {
+    background: #333;
+    border-color: #fff;
+}
+
+#fullscreenBtn {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 999999;
+    background: green;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+
+<div id="passwordWrapper">
+    <h2>Password Layout</h2>
+    <input type="password" id="passwordInput" placeholder="password lockscreen test">
+    <button onclick="checkPassword()">button</button>
+    <p id="passwordMessage" style="color:red;margin-top:10px;"></p>
+</div>
+
+
+<div id="menu">
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/games.hml')">Bad Time Simulator</div>
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/badmondaysimulator.html')">Bad Monday Simulator</div>
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/amandatheadventure.html')">Amanda The Adventure</div>
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/bergentruck.html')">Bergen Truck</div>
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/minecraft.html')">Minecraft</div>
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/deltatraveler.html')">DeltaTraveler</div>
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/badparenting.html')">Bad Parenting</div>
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/bloodmoney.html')">Blood Money</div>
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/bitlife.html')">BitLife</div>
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/buckshotroulette.html')">Buckshot Roulette</div>
+
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/refs/heads/main/legendofzeldaocarinaoftime')">
+        Legend of Zelda: Ocarina of Time
+    </div>
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/cubefield.html')">Cubefield</div>
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/geometrydash.html')">Geometry Dash</div>
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/1v1lol.html')">1v1.LOL</div>
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/supermario64.html')">Super Mario 64</div>
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/supermariobros.html')">Super Mario Bros</div>
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/jetpackjoyride.html')">Jetpack Joyride</div>
+    <div class="game-btn" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/soundboard.html')">Soundboard</div>
+</div>
+
+<button id="fullscreenBtn" onclick="toggleFullscreen()">⛶</button>
+
+<script>
+sessionStorage.setItem("launcherHTML", document.documentElement.outerHTML);
+
+// PASSWORD CHECK
+function checkPassword() {
+    const input = document.getElementById("passwordInput").value;
+    if (input === "dougiscool") {
+        document.getElementById("passwordWrapper").style.display = "none";
+        document.getElementById("menu").style.display = "grid";
+    } else {
+        document.getElementById("passwordMessage").textContent = "Incorrect password!";
+    }
+}
+
+// GAME LOADER
+async function loadGame(url) {
+    const r = await fetch(url);
+    const t = await r.text();
+    document.open();
+    document.write(t);
+    document.close();
+    window.addEventListener("load", () => {
+        addClose();
+        addFullscreen();
+    });
+}
+
+function addClose() {
+    const b = document.createElement("button");
+    b.textContent = "✖";
+    b.style.cssText = `
+        position:fixed;top:10px;right:10px;
+        z-index:999999;background:red;color:#fff;
+        border:none;padding:6px 10px;font-size:18px;
+        cursor:pointer;
+    `;
+    b.onclick = restore;
+    document.body.appendChild(b);
+}
+
+function addFullscreen() {
+    if (document.getElementById("fullscreenBtn")) return;
+    const b = document.createElement("button");
+    b.id = "fullscreenBtn";
+    b.textContent = "⛶";
+    b.style.cssText = `
+        position:fixed;bottom:10px;right:10px;
+        z-index:999999;background:green;color:#fff;
+        border:none;padding:6px 10px;font-size:18px;
+        cursor:pointer;
+    `;
+    b.onclick = toggleFullscreen;
+    document.body.appendChild(b);
+}
+
+function toggleFullscreen() {
+    const b = document.getElementById("fullscreenBtn");
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    }
+    if (b) b.remove();
+}
+
+document.addEventListener("fullscreenchange", () => {
+    if (!document.fullscreenElement) addFullscreen();
+});
+
+function restore() {
+    document.open();
+    document.write(sessionStorage.getItem("launcherHTML"));
+    document.close();
+}
+</script>
+
+</body>
+</html>
