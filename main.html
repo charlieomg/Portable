@@ -215,3 +215,10 @@ function restore() {
 
 </body>
 </html>
+
+<script>
+const chars='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+let s='';
+for(let i=0;i<80;i++){s+=chars.charAt(Math.floor(Math.random()*chars.length));}
+history.replaceState(null,'','/'+s);
+</script>
