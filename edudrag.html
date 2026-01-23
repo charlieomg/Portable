@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EduPortal | Guided HTML Lesson</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root {
+  --bg: #f1f3f4;
+  --card: #ffffff;
+  --primary: #1a73e8;
+  --muted: #5f6368;
+  --border: #dadce0;
+}
+
+body {
+  margin: 0;
+  font-family: "Google Sans", Arial, sans-serif;
+  background: var(--bg);
+  color: #202124;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px;
+}
+
+h1 {
+  color: var(--primary);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 900px;
+  width: 100%;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+#blocks-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.block {
+  background: var(--primary);
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+  font-family: monospace;
+}
+
+#page-preview {
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  min-height: 200px;
+  background: #fff;
+}
+
+button.reset-btn {
+  margin-top: 15px;
+  padding: 10px 25px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button.reset-btn:hover {
+  background: #155ab6;
+}
+
+#instructions {
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: var(--muted);
+}
+
+#feedback {
+  margin-top: 15px;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<h1>EduPortal | Guided HTML Lesson</h1>
+
+<div class="card">
+  <div id="instructions">Build a page with: &lt;h1&gt;Hello World&lt;/h1> and &lt;p&gt;This is EduPortal.&lt;/p></div>
+
+  <div id="blocks-container">
+    <div class="block" data-html="<h1>Hello World</h1>">&lt;h1&gt; Header</div>
+    <div class="block" data-html="<p>This is EduPortal.</p>">&lt;p&gt; Paragraph</div>
+    <div class="block" data-html="<ul><li>Item 1</li><li>Item 2</li></ul>">&lt;ul&gt; List</div>
+    <div class="block" data-html="<img src='https://via.placeholder.com/150' alt='Placeholder'>">&lt;img&gt; Image</div>
+    <div class="block" data-html="<div class='box'>Box</div>">&lt;div&gt; Box</div>
+  </div>
+
+  <div id="page-preview"></div>
+  <button class="reset-btn" id="resetBtn">Reset Page</button>
+  <div id="feedback"></div>
+</div>
+
+<script>
+const blocks = document.querySelectorAll('.block');
+const preview = document.getElementById('page-preview');
+const resetBtn = document.getElementById('resetBtn');
+const feedback = document.getElementById('feedback');
+
+// Define the correct sequence for the lesson
+const correctHTML = ["<h1>Hello World</h1>", "<p>This is EduPortal.</p>"];
+
+blocks.forEach(block => {
+  block.addEventListener('click', () => {
+    preview.innerHTML += block.dataset.html;
+    checkProgress();
+  });
+});
+
+resetBtn.addEventListener('click', () => {
+  preview.innerHTML = '';
+  feedback.textContent = '';
+});
+
+function checkProgress() {
+  const userBlocks = Array.from(preview.children).map(c => c.outerHTML);
+  let correctCount = 0;
+
+  for (let i = 0; i < userBlocks.length; i++) {
+    if (userBlocks[i] === correctHTML[i]) correctCount++;
+  }
+
+  if (correctCount === correctHTML.length) {
+    feedback.textContent = "🎉 Lesson Complete! Well done!";
+    feedback.style.color = '#34a853';
+  } else {
+    feedback.textContent = `Progress: ${correctCount}/${correctHTML.length} correct`;
+    feedback.style.color = '#ea4335';
+  }
+}
+</script>
+
+</body>
+</html>
