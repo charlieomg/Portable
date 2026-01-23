@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EduPortal | Lesson</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root {
+  --bg: #f1f3f4;
+  --card: #ffffff;
+  --primary: #1a73e8;
+  --muted: #5f6368;
+  --border: #dadce0;
+}
+
+body {
+  margin: 0;
+  font-family: "Google Sans", Arial, sans-serif;
+  background: var(--bg);
+  color: #202124;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+h1 {
+  color: var(--primary);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.game-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 700px;
+  width: 100%;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.phrase {
+  font-size: 20px;
+  margin-bottom: 20px;
+  user-select: none;
+  text-align: center;
+  color: #202124;
+  line-height: 1.4;
+}
+
+input {
+  padding: 12px;
+  width: 100%;
+  font-size: 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+  margin-bottom: 20px;
+  transition: box-shadow 0.2s;
+}
+
+input:focus {
+  box-shadow: 0 0 5px var(--primary);
+  border-color: var(--primary);
+}
+
+.stats {
+  font-size: 16px;
+  color: var(--muted);
+  margin-bottom: 15px;
+}
+
+button {
+  padding: 10px 25px;
+  font-size: 16px;
+  color: #fff;
+  background: var(--primary);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #155ab6;
+}
+
+.difficulty {
+  margin-top: 30px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.difficulty button {
+  background: #5f6368;
+}
+
+.difficulty button.active {
+  background: var(--primary);
+}
+
+.difficulty button:hover {
+  opacity: 0.9;
+}
+</style>
+</head>
+<body>
+
+<h1>EduPortal | Lesson: Typing</h1>
+
+<div class="game-card">
+  <div class="phrase" id="phrase">Loading...</div>
+  <input type="text" id="input" placeholder="Type here..." autofocus>
+  <div class="stats" id="stats"></div>
+  <button id="restart">Restart Game</button>
+
+  <div class="difficulty">
+    <button data-diff="easy" class="active">Easy</button>
+    <button data-diff="medium">Medium</button>
+    <button data-diff="hard">Hard</button>
+    <button data-diff="extreme">Extreme</button>
+    <button data-diff="impossible">Impossible</button>
+  </div>
+</div>
+
+<script>
+const phraseSets = {
+  easy: [
+    "The quick brown fox jumps over the lazy dog",
+    "Coding is fun when you understand it",
+    "Practice makes perfect every day",
+    "Never stop learning new things",
+    "EduPortal is a great digital platform"
+  ],
+  medium: [
+    "Learning JavaScript can open many doors in your career",
+    "Consistency is the key to mastering any skill",
+    "Web development combines creativity and logic",
+    "Understanding algorithms helps solve problems efficiently",
+    "Good coding practices lead to maintainable software"
+  ],
+  hard: [
+    "Asynchronous programming allows multiple tasks to run concurrently",
+    "Debugging complex code requires patience and attention to detail",
+    "Design patterns provide solutions to common software problems",
+    "Optimizing algorithms improves performance significantly",
+    "Refactoring code regularly keeps the codebase healthy and clean"
+  ],
+  extreme: [
+    "The constitution of Pneumonoultramicroscopicsilicovolcanoconiosis is a sillicet microcosm that confounds even the most experienced lexicographers",
+    "Floccinaucinihilipilification is often used to express the act of estimating something as worthless in verbose contexts",
+    "Supercalifragilisticexpialidocious might seem nonsensical but is delightfully fun to type accurately",
+    "Hippopotomonstrosesquipedaliophobia ironically refers to the fear of long words in English",
+    "Antidisestablishmentarianism played a crucial role in historical political debates in the nineteenth century"
+  ],
+  impossible: [
+    "LoremipsumdolorsitametconsecteturadipiscingelitSeddoeiusmodtemporincididuntutlaboreetdoloremagnaaliquaUtensimadminimveniamquisnostrudexercitationullamcolaborisnisiutaliquipexeacommodoconsequatDuisautemvelereprehenderit",
+    "Sedutperspiciatisundeomnistevoluptatemaccusantiumdoloremnemoenimquisnobisestnatuserrormagnidistinctioquiassumendaomnisvelitexpedita",
+    "Attributefacereplaceatnonvoluptasautemquiadperspiciatisprovidentoccaecatiquisintoccaecatinonreprehenderitsunt",
+    "Corporisvoluptatemarchitectobeataenonfacereconsecteturvoluptasquodoloresdistinctioquiautemquiaut",
+    "Exercitationullamcollaborelaborisminimveniamdoloremquisedexercitationenimtemporincididunt"
+  ]
+};
+
+let currentPhrases = phraseSets.easy;
+let current = 0;
+let startTime;
+
+const phraseEl = document.getElementById('phrase');
+const inputEl = document.getElementById('input');
+const statsEl = document.getElementById('stats');
+const restartBtn = document.getElementById('restart');
+const difficultyBtns = document.querySelectorAll('.difficulty button');
+
+phraseEl.addEventListener('contextmenu', e => e.preventDefault());
+
+function calculateWPM(characters, seconds) {
+  const words = characters / 5; 
+  return ((words / seconds) * 60).toFixed(1);
+}
+
+function loadPhrase() {
+  phraseEl.textContent = currentPhrases[current];
+  inputEl.value = '';
+  inputEl.disabled = false;
+  startTime = new Date();
+  statsEl.textContent = '';
+}
+
+inputEl.addEventListener('input', () => {
+  const elapsed = (new Date() - startTime) / 1000;
+  const typed = inputEl.value.length;
+  const wpm = calculateWPM(typed, elapsed);
+  statsEl.textContent = `WPM: ${wpm} | Time: ${elapsed.toFixed(1)}s`;
+
+  if(inputEl.value === currentPhrases[current]) {
+    statsEl.textContent = `✅ Completed! Time: ${elapsed.toFixed(2)}s | WPM: ${wpm}`;
+    current++;
+    if(current < currentPhrases.length) {
+      setTimeout(loadPhrase, 800);
+    } else {
+      phraseEl.textContent = "🎉 All phrases completed!";
+      inputEl.disabled = true;
+    }
+  }
+});
+
+restartBtn.addEventListener('click', () => {
+  current = 0;
+  loadPhrase();
+});
+
+difficultyBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    difficultyBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentPhrases = phraseSets[btn.dataset.diff];
+    current = 0;
+    loadPhrase();
+  });
+});
+
+loadPhrase();
+</script>
+
+</body>
+</html>
