@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EduPortal | Lesson Plans</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root {
+  --bg: #f1f3f4;
+  --card: #ffffff;
+  --primary: #1a73e8;
+  --muted: #5f6368;
+  --border: #dadce0;
+}
+
+body {
+  margin: 0;
+  font-family: "Google Sans", Arial, sans-serif;
+  background: var(--bg);
+  color: #202124;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px;
+  min-height: 100vh;
+}
+
+h1 {
+  color: var(--primary);
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 25px 20px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 18px;
+  color: var(--primary);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.card p {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: normal;
+}
+
+footer {
+  margin-top: 40px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+#lesson-container {
+  width: 100%;
+  max-width: 1000px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+
+#lesson-content {
+  width: 100%;
+}
+
+#back-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#back-button:hover {
+  background: #155ab6;
+}
+</style>
+</head>
+<body>
+
+<h1>EduPortal | Choose a Lesson Plan</h1>
+
+<div class="cards" id="lesson-cards">
+<div class="cards" id="lesson-cards">
+  <div class="card" data-github="https://raw.githubusercontent.com/charlieomg/Portable/refs/heads/main/edudrag.html">
+    <strong>Drag & Drop Lesson</strong>
+    <p>Arrange HTML elements in the correct order to complete structured exercises.</p>
+  </div>
+
+  <div class="card" data-github="https://raw.githubusercontent.com/charlieomg/Portable/refs/heads/main/edureading.html">
+    <strong>Reading & Quiz</strong>
+    <p>Read coding concepts and answer interactive questions to test your knowledge.</p>
+  </div>
+
+  <div class="card" data-github="https://raw.githubusercontent.com/charlieomg/Portable/refs/heads/main/edutype.html">
+    <strong>Typing Challenge</strong>
+    <p>Improve your typing speed and accuracy while practicing coding phrases in real time.</p>
+  </div>
+
+  <div class="card" data-github="https://raw.githubusercontent.com/charlieomg/Portable/refs/heads/main/eduworksheet.html">
+    <strong>Interactive Worksheet</strong>
+    <p>Fill in missing code snippets to complete exercises step by step.</p>
+  </div>
+
+  <!-- Original fake lessons -->
+  <div class="card"><strong>Advanced CSS Tricks</strong><p>Master complex layouts and animations using modern CSS techniques.</p></div>
+  <div class="card"><strong>JavaScript Algorithms</strong><p>Practice problem solving and logic by implementing common algorithms.</p></div>
+  <div class="card"><strong>Responsive Web Design</strong><p>Create websites that adapt seamlessly across devices and screen sizes.</p></div>
+
+  <!-- 30 more fake lessons -->
+  <div class="card"><strong>HTML Forms Deep Dive</strong><p>Learn advanced form elements, validation, and user-friendly input.</p></div>
+  <div class="card"><strong>Flexbox Mastery</strong><p>Layout pages perfectly using modern flexbox techniques.</p></div>
+  <div class="card"><strong>CSS Grid Layouts</strong><p>Create complex, responsive layouts using CSS Grid.</p></div>
+  <div class="card"><strong>JavaScript DOM Manipulation</strong><p>Interact with page elements dynamically using JS.</p></div>
+  <div class="card"><strong>CSS Animations</strong><p>Bring websites to life with smooth transitions and keyframe animations.</p></div>
+  <div class="card"><strong>SVG Graphics</strong><p>Use Scalable Vector Graphics to create interactive visuals.</p></div>
+  <div class="card"><strong>CSS Variables & Themes</strong><p>Build flexible designs using custom properties and theming.</p></div>
+  <div class="card"><strong>ES6 JavaScript Features</strong><p>Modernize your code with let, const, arrow functions, and more.</p></div>
+  <div class="card"><strong>JavaScript Event Handling</strong><p>Respond to user actions with click, hover, and keyboard events.</p></div>
+  <div class="card"><strong>Debugging & DevTools</strong><p>Learn to efficiently debug code using browser developer tools.</p></div>
+  <div class="card"><strong>Web Accessibility Basics</strong><p>Create websites usable by everyone, including people with disabilities.</p></div>
+  <div class="card"><strong>Progressive Web Apps</strong><p>Make websites feel like native apps with service workers and caching.</p></div>
+  <div class="card"><strong>JavaScript Arrays & Objects</strong><p>Manage complex data structures effectively in your scripts.</p></div>
+  <div class="card"><strong>CSS Pseudo-classes & Pseudo-elements</strong><p>Style elements dynamically based on state or position.</p></div>
+  <div class="card"><strong>Web Fonts & Typography</strong><p>Make text beautiful and readable with web-safe fonts and styling.</p></div>
+  <div class="card"><strong>CSS Responsive Media Queries</strong><p>Adapt page layout for phones, tablets, and desktops.</p></div>
+  <div class="card"><strong>JavaScript Promises & Async</strong><p>Handle asynchronous code like a pro with Promises and async/await.</p></div>
+  <div class="card"><strong>Browser Storage</strong><p>Save data using localStorage, sessionStorage, and IndexedDB.</p></div>
+  <div class="card"><strong>CSS Shadows & Filters</strong><p>Create depth and style effects with shadows and filters.</p></div>
+  <div class="card"><strong>Responsive Images</strong><p>Load images efficiently with srcset, sizes, and lazy loading.</p></div>
+  <div class="card"><strong>JavaScript Forms & Validation</strong><p>Validate and process user input with client-side JS.</p></div>
+  <div class="card"><strong>CSS Variables Animation</strong><p>Animate your design using CSS custom properties.</p></div>
+  <div class="card"><strong>CSS Flex & Grid Together</strong><p>Combine the power of Flexbox and Grid for complex layouts.</p></div>
+  <div class="card"><strong>JavaScript Classes & Objects</strong><p>Organize code using ES6 classes and object-oriented principles.</p></div>
+  <div class="card"><strong>JavaScript Fetch API</strong><p>Retrieve and manipulate data from APIs dynamically.</p></div>
+  <div class="card"><strong>CSS Transformations</strong><p>Rotate, scale, and skew elements for interactive designs.</p></div>
+  <div class="card"><strong>CSS Transitions</strong><p>Smoothly animate property changes like a pro.</p></div>
+  <div class="card"><strong>Advanced HTML5 Elements</strong><p>Use semantic and functional HTML5 elements for modern websites.</p></div>
+  <div class="card"><strong>JavaScript Timers & Intervals</strong><p>Create repeating or delayed actions with JS timers.</p></div>
+  <div class="card"><strong>CSS Clip-path & Shapes</strong><p>Design creative shapes and masks for your UI elements.</p></div>
+  <div class="card"><strong>Website Performance Optimization</strong><p>Speed up your website with best coding practices.</p></div>
+  <div class="card"><strong>JavaScript Modules</strong><p>Organize code into reusable ES6 modules.</p></div>
+<div class="card"><strong>CSS Gradients & Backgrounds</strong><p>Create stunning backgrounds with linear, radial, and conic gradients.</p></div>
+<div class="card"><strong>JavaScript Loops Deep Dive</strong><p>Master for, while, and for-of loops for effective iteration.</p></div>
+<div class="card"><strong>HTML Audio & Video</strong><p>Embed and control media elements in your web pages.</p></div>
+<div class="card"><strong>CSS Typography Tricks</strong><p>Advanced text styling, spacing, and alignment techniques.</p></div>
+<div class="card"><strong>Responsive Navigation</strong><p>Build menus that adapt to mobile, tablet, and desktop.</p></div>
+<div class="card"><strong>JavaScript Event Delegation</strong><p>Efficiently manage multiple events on dynamic elements.</p></div>
+<div class="card"><strong>CSS Positioning Mastery</strong><p>Use relative, absolute, fixed, and sticky positioning effectively.</p></div>
+<div class="card"><strong>HTML5 Forms & Input Types</strong><p>Advanced form inputs, validation, and accessibility tips.</p></div>
+<div class="card"><strong>CSS Pseudo Elements</strong><p>Enhance your UI with ::before, ::after, and custom effects.</p></div>
+<div class="card"><strong>JavaScript Error Handling</strong><p>Catch and manage errors using try, catch, and finally blocks.</p></div>
+<div class="card"><strong>CSS Media Queries & Breakpoints</strong><p>Make your design responsive with smart breakpoints.</p></div>
+<div class="card"><strong>HTML Semantic Elements</strong><p>Use semantic tags for accessible and SEO-friendly content.</p></div>
+<div class="card"><strong>JavaScript Math & Random</strong><p>Generate numbers, random values, and use math functions effectively.</p></div>
+<div class="card"><strong>CSS Flexbox Responsive Cards</strong><p>Create card layouts that adjust dynamically using flexbox.</p></div>
+<div class="card"><strong>Web Forms Styling</strong><p>Make forms visually appealing and intuitive to use.</p></div>
+<div class="card"><strong>JavaScript String Methods</strong><p>Manipulate text efficiently using built-in string methods.</p></div>
+<div class="card"><strong>CSS Hover Effects</strong><p>Make interactive hover animations with ease.</p></div>
+<div class="card"><strong>HTML Lists & Tables</strong><p>Organize data clearly using ordered/unordered lists and tables.</p></div>
+<div class="card"><strong>JavaScript Date & Time</strong><p>Work with dates, times, and countdowns dynamically.</p></div>
+<div class="card"><strong>CSS Box Model</strong><p>Master padding, margin, border, and content spacing.</p></div>
+<div class="card"><strong>HTML Links & Anchors</strong><p>Create navigation and connect pages effectively.</p></div>
+<div class="card"><strong>JavaScript Functions</strong><p>Write reusable functions to organize your code better.</p></div>
+<div class="card"><strong>CSS Shadows & Gradients</strong><p>Enhance depth and style in your web designs.</p></div>
+<div class="card"><strong>HTML Images & Figures</strong><p>Display images correctly with captions and accessibility.</p></div>
+<div class="card"><strong>JavaScript Arrays & Methods</strong><p>Work with arrays using map, filter, reduce, and more.</p></div>
+<div class="card"><strong>CSS Transitions & Transform</strong><p>Smoothly animate element properties for interactive UI.</p></div>
+<div class="card"><strong>HTML Headings & Structure</strong><p>Organize content with semantic heading hierarchy.</p></div>
+<div class="card"><strong>JavaScript Objects Deep Dive</strong><p>Understand key-value pairs, nested objects, and properties.</p></div>
+<div class="card"><strong>CSS Responsive Typography</strong><p>Scale fonts dynamically for different screens.</p></div>
+<div class="card"><strong>HTML Meta Tags</strong><p>Optimize SEO, social sharing, and page settings.</p></div>
+
+</div>
+
+</div>
+
+<div id="lesson-container">
+  <div id="lesson-content"></div>
+  <button id="back-button">Back to Lesson Selector</button>
+</div>
+
+<footer>© 2026 EduPortal • Educational Use Only</footer>
+
+<script>
+const lessonCards = document.querySelectorAll('.card[data-github]');
+const lessonCardsContainer = document.getElementById('lesson-cards');
+const lessonContainer = document.getElementById('lesson-container');
+const lessonContent = document.getElementById('lesson-content');
+const backButton = document.getElementById('back-button');
+
+let addedLinks = [];
+let addedStyles = [];
+let addedScripts = [];
+
+function loadLesson(url) {
+  fetch(url)
+    .then(res => res.text())
+    .then(html => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+
+      // Inject lesson body
+      lessonContent.innerHTML = doc.body.innerHTML;
+
+      // Add lesson CSS
+      doc.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+        const newLink = document.createElement('link');
+        newLink.rel = 'stylesheet';
+        newLink.href = link.href;
+        document.head.appendChild(newLink);
+        addedLinks.push(newLink);
+      });
+      doc.querySelectorAll('style').forEach(style => {
+        const newStyle = document.createElement('style');
+        newStyle.textContent = style.textContent;
+        document.head.appendChild(newStyle);
+        addedStyles.push(newStyle);
+      });
+
+      // Add lesson scripts
+      doc.querySelectorAll('script').forEach(oldScript => {
+        const newScript = document.createElement('script');
+        if (oldScript.src) newScript.src = oldScript.src;
+        else newScript.textContent = oldScript.textContent;
+        document.body.appendChild(newScript);
+        addedScripts.push(newScript);
+      });
+
+      lessonCardsContainer.style.display = 'none';
+      lessonContainer.style.display = 'flex';
+      lessonContainer.scrollIntoView({ behavior: 'smooth' });
+    })
+    .catch(err => {
+      alert("Failed to load lesson.");
+      console.error(err);
+    });
+}
+
+lessonCards.forEach(card => {
+  card.addEventListener('click', () => {
+    const url = card.dataset.github;
+    loadLesson(url);
+  });
+});
+
+backButton.addEventListener('click', () => {
+  // Remove lesson content
+  lessonContent.innerHTML = '';
+
+  // Remove dynamically added CSS
+  addedLinks.forEach(link => link.remove());
+  addedLinks = [];
+  addedStyles.forEach(style => style.remove());
+  addedStyles = [];
+
+  // Remove dynamically added scripts
+  addedScripts.forEach(script => script.remove());
+  addedScripts = [];
+
+  lessonContainer.style.display = 'none';
+  lessonCardsContainer.style.display = 'grid';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+</script>
+
+</body>
+</html>
