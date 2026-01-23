@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EduPortal | Interactive Worksheet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root {
+  --bg: #f1f3f4;
+  --card: #ffffff;
+  --primary: #1a73e8;
+  --muted: #5f6368;
+  --border: #dadce0;
+}
+
+body {
+  margin: 0;
+  font-family: "Google Sans", Arial, sans-serif;
+  background: var(--bg);
+  color: #202124;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+h1 {
+  color: var(--primary);
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 800px;
+  width: 100%;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+.code-snippet {
+  background: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  font-family: monospace;
+  overflow-x: auto;
+  margin: 15px 0;
+}
+
+input.answer {
+  font-family: monospace;
+  padding: 5px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  width: 120px;
+  margin: 0 3px;
+}
+
+button.check-btn {
+  margin-top: 15px;
+  padding: 10px 25px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button.check-btn:hover {
+  background: #155ab6;
+}
+
+.correct {
+  border-color: #34a853;
+  background-color: #e6f4ea;
+}
+
+.wrong {
+  border-color: #ea4335;
+  background-color: #fce8e6;
+}
+</style>
+</head>
+<body>
+
+<h1>EduPortal | Interactive Coding Worksheet</h1>
+
+<div class="card">
+  <h2>Lesson: JavaScript Variables</h2>
+  <p>Fill in the blanks in the following code:</p>
+  <div class="code-snippet">
+<pre>
+let ___ = "Alice";
+const ___ = 25;
+var ___ = "USA";
+
+console.log(name + " is " + age + " years old from " + country);
+</pre>
+</div>
+
+<div>
+  <label>Variable 1: <input class="answer" id="ans1" placeholder="type answer"></label>
+  <label>Variable 2: <input class="answer" id="ans2" placeholder="type answer"></label>
+  <label>Variable 3: <input class="answer" id="ans3" placeholder="type answer"></label>
+</div>
+<button class="check-btn" id="check-btn">Check Answers</button>
+</div>
+
+<div class="card" id="feedback" style="display:none;"></div>
+
+<script>
+const correctAnswers = ["name", "age", "country"];
+const inputs = [
+  document.getElementById("ans1"),
+  document.getElementById("ans2"),
+  document.getElementById("ans3")
+];
+const feedbackDiv = document.getElementById("feedback");
+const checkBtn = document.getElementById("check-btn");
+
+checkBtn.addEventListener("click", () => {
+  let correctCount = 0;
+  inputs.forEach((input, i) => {
+    const val = input.value.trim();
+    if(val === correctAnswers[i]) {
+      input.classList.add("correct");
+      input.classList.remove("wrong");
+      correctCount++;
+    } else {
+      input.classList.add("wrong");
+      input.classList.remove("correct");
+    }
+  });
+
+  feedbackDiv.style.display = "block";
+  if(correctCount === correctAnswers.length) {
+    feedbackDiv.innerHTML = "🎉 All correct! Great job!";
+  } else {
+    feedbackDiv.innerHTML = `You got ${correctCount} out of ${correctAnswers.length} correct. Try again!`;
+  }
+});
+</script>
+
+</body>
+</html>
