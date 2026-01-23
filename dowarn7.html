@@ -1,0 +1,46 @@
+<script>
+(async () => {
+  const isChromium = !!window.chrome && /Chrome|Edg/.test(navigator.userAgent);
+  if(!isChromium){
+    alert("Failed to do spyware check");
+    return;
+  }
+
+  const extensions = [
+    { name:"Securly", id:"joflmkccibkooplaeoinecjbmdebglab", path:"fonts/Metropolis.css" },
+    { name:"Securly (old)", id:"iheobagjkfklnlikgihanlhcddjoihkg", path:"fonts/Metropolis.css" },
+    { name:"GoGuardian", id:"haldlgldplgnggkjaafhelgiaglafanh", path:"youtube_injection.js" },
+    { name:"LANSchool", id:"baleiojnjpgeojohhhfbichcodgljmnj", path:"blocked.html" },
+    { name:"Linewize", id:"ddfbkhpmcdbciejenfcolaaiebnjcbfc", path:"background/assets/pages/default-blocked.html" },
+    { name:"Blocksi", id:"ghlpmldmjjhmdgmneoaibbegkjjbonbk", path:"pages/blockPage.html" },
+    { name:"Fortiguard", id:"igbgpehnbmhgdgjbhkkpedommgmfbeao", path:"youtube_injection.js" },
+    { name:"Cisco Umbrella", id:"jcdhmojfecjfmbdpchihbeilohgnbdci", path:"blocked.html" },
+    { name:"ContentKeeper", id:"jdogphakondfdmcanpapfahkdomaicfa", path:"img/ckauth19x.png" },
+    { name:"Hapara", id:"kbohafcopfpigkjdimdcdgenlhkmhbnc", path:"blocked.html" },
+    { name:"Gopher Buddy", id:"cgbbbjmgdpnifijconhamggjehlamcif", path:"images/gopher-buddy_128x128_color.png" }
+  ];
+
+  const detected = [];
+
+  async function probe(id, path){
+    try{
+      let controller = new AbortController();
+      setTimeout(()=>controller.abort(), 500);
+      await fetch(`chrome-extension://${id}/${path}`, {signal: controller.signal});
+      return true;
+    }catch(e){
+      return String(e).includes("AbortError"); // extension exists but fetch aborted
+    }
+  }
+
+  for(let ext of extensions){
+    if(await probe(ext.id, ext.path)) detected.push(ext.name);
+  }
+
+  if(detected.length){
+    alert("Detected school monitoring extensions:\n" + detected.join("\n"));
+  } else {
+    alert("No school monitoring extensions detected");
+  }
+})();
+</script>
