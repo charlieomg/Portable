@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script type="text/javascript" src="https://361820596-851580422716946014.preview.editmysite.com/uploads/b/139890129-473108247243760926/files/gamesnacks.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta charset="utf-8" />
+    <title>Tiny Fishing 1</title>
+    <style>
+        body {
+            background: #000;
+            color: #cccccc;
+            margin: 0px;
+            padding: 0px;
+            border: 0px;
+        }
+
+        canvas {
+            image-rendering: optimizeSpeed;
+            -webkit-interpolation-mode: nearest-neighbor;
+            -ms-touch-action: none;
+            margin: 0px;
+            padding: 0px;
+            border: 0px;
+        }
+
+        :-webkit-full-screen #canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        invisible_button {
+            background-color: rgba(1, 1, 1, 1);
+            background-repeat: no-repeat;
+            border: none;
+            cursor: disabled;
+            overflow: hidden;
+            outline: none;
+            bottom: 0;
+            left: 0;
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            top: 0px;
+            left: 0px;
+            pointer-events: none;
+            filter: alpha(opacity=0);
+            -mos-opacity: 0.0;
+            opacity: 0.0;
+            display: block;
+            z-index: 2;
+            -moz-user-select: -moz-none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        div.gm4html5_div_class {
+            margin: 0px;
+            padding: 0px;
+            border: 0px;
+        }
+
+        /* START - Login Dialog Box */
+        div.gm4html5_login {
+            padding: 20px;
+            position: absolute;
+            border: solid 2px #000000;
+            background-color: #404040;
+            color: #00ff00;
+            border-radius: 15px;
+            box-shadow: #101010 20px 20px 40px;
+        }
+
+        div.gm4html5_cancel_button {
+            float: right;
+        }
+
+        div.gm4html5_login_button {
+            float: left;
+        }
+
+        div.gm4html5_login_header {
+            text-align: center;
+        }
+
+        /* END - Login Dialog Box */
+        :-webkit-full-screen {
+            width: 100%;
+            height: 100%;
+        }
+
+        #sbar1 {
+            border-radius: 25px;
+            background: #73AD21;
+            padding: 20px;
+            width: 200px;
+            height: 150px;
+        }
+
+        /* Modded overlay styles */
+        #moddedOverlay {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            color: orange;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 999999;
+            pointer-events: none;
+        }
+
+        #moddedOverlay img {
+            width: 30px;
+            height: 30px;
+            animation: rotate 2s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+    <script>
+        if (!Number.isNaN && window.isNaN) Number.isNaN = isNaN;
+    </script>
+</head>
+
+<body>
+    <img src="https://361820596-851580422716946014.preview.editmysite.com/uploads/b/139890129-473108247243760926/files/html5game/bg.png" id="img_loadingbg" alt="" style="position:absolute; left : 0; top : 0; width:1px; height:1px;" />
+    <img src="https://361820596-851580422716946014.preview.editmysite.com/uploads/b/139890129-473108247243760926/files/html5game/caption.png" id="img_loadingicon" alt="" style="position:absolute; left : 0; top : 0; width:1px; height:1px;" />
+    <img src="https://361820596-851580422716946014.preview.editmysite.com/uploads/b/139890129-473108247243760926/files/html5game/bh5logo.png" id="img_loadinglogoicon" alt="" style="position:absolute; left : 0; top : 0; width:1px; height:1px;" />
+    <div id="img_loadingbar" style="border-radius: 25px; width:1px;height:1px; position:absolute; left : 0px; top : 0; background-color:#d7e0ee"></div>
+    <div id="img_loadingbaroverlay" style="border-radius: 25px; width:1px;height:1px; position:absolute; left : 0px; top : 0; background-color:#f8703a"></div>
+    <div class="gm4html5_div_class" id="gm4html5_div_id">
+        <canvas id="canvas" width="1" height="1">
+            <p>Your browser doesn't support HTML5 canvas.</p>
+        </canvas>
+    </div>
+    <script type="text/javascript" src="https://361820596-851580422716946014.preview.editmysite.com/uploads/b/139890129-473108247243760926/files/html5game/TinyFishing.js"></script>
+    <script>
+        window.onload = function () {
+            if (!window.AudioContext && !window.webkitAudioContext) g_WebAudioContext = {};
+            GameMaker_Init();
+            if (!window.AudioContext && !window.webkitAudioContext) g_WebAudioContext = null;
+        };
+    </script>
+
+    <!-- Modded by Doug overlay container -->
+    <div id="moddedOverlay" style="display:none;">
+        <span>modded by Doug</span>
+        <img src="https://www.clipartmax.com/png/small/81-817945_3d-traffic-cone-[png-800%C3%97800]-traffic-cone-png.png" alt="cone">
+    </div>
+
+    <script>
+        (function() {
+            function setCookie(name, value, days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days*24*60*60*1000));
+                document.cookie = name + "=" + value + ";expires=" + date.toUTCString() + ";path=/";
+            }
+
+            document.addEventListener('keydown', function(e) {
+                // H key for modding cookies
+                if(e.key.toLowerCase() === 'h') {
+                    const money = prompt("How much money (ADMINTOOLS)?");
+                    if(money !== null) setCookie("Gone FishingmoneyEarned", money, 365);
+
+                    const bestScore = prompt("Change your Gone FishingbestScore:");
+                    if(bestScore !== null) setCookie("Gone FishingbestScore", bestScore, 365);
+
+                    const maxDepth = prompt("Change your Gone FishingmaxDepthLvl:");
+                    if(maxDepth !== null) setCookie("Gone FishingmaxDepthLvl", maxDepth, 365);
+
+                    const maxFishes = prompt("Change your Gone FishingmaxFishesLvl:");
+                    if(maxFishes !== null) setCookie("Gone FishingmaxFishesLvl", maxFishes, 365);
+
+                    alert("Values updated! They will take effect on next game load.");
+                }
+
+                
+                if(e.key.toLowerCase() === 'z') {
+                    const overlay = document.getElementById('moddedOverlay');
+                    overlay.style.display = 'flex';
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
