@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HeraELA</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: #f0f2f5;
+}
+
+/* Password Overlay */
+#overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+#passwordCard {
+  background: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  width: 300px;
+}
+
+#passwordCard h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #1a73e8;
+}
+
+#passwordCard input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+#passwordCard button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  background: #1a73e8;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#passwordCard button:hover {
+  background: #155ab6;
+}
+
+#overlayMsg {
+  margin-top: 8px;
+  color: red;
+  font-weight: bold;
+}
+
+/* Game Menu */
+#menu {
+  display: none;
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+}
+
+#menu button {
+  display: block;
+  width: 100%;
+  margin: 6px 0;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+#menu button:hover {
+  background: #e0e0e0;
+  transform: translateY(-2px);
+}
+</style>
+</head>
+
+<body>
+
+<!-- Password Overlay -->
+<div id="overlay">
+  <div id="passwordCard">
+    <h1>HeraELA</h1>
+    <input type="password" id="pw" placeholder="Enter Password">
+    <button onclick="checkPassword()">Sign In</button>
+    <div id="overlayMsg"></div>
+  </div>
+</div>
+
+<!-- Game Menu -->
+<div id="menu">
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/games.hml')">Bad Time Simulator</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/badmondaysimulator.html')">Bad Monday Simulator</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/amandatheadventure.html')">Amanda The Adventure</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/fishmod.html')">Tiny Fishing</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/minecraft.html')">Minecraft</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/deltatraveler.html')">DeltaTraveler</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/badparenting.html')">Bad Parenting</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/bloodmoney.html')">Blood Money</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/bitlife.html')">BitLife</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/buckshotroulette.html')">Buckshot Roulette</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/refs/heads/main/legendofzeldaocarinaoftime')">Legend of Zelda: Ocarina of Time</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/cubefield.html')">Cubefield</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/geometrydash.html')">Geometry Dash</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/1v1lol.html')">1v1.LOL</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/supermario64.html')">Super Mario 64</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/supermariobros.html')">Super Mario Bros</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/jetpackjoyride.html')">Jetpack Joyride</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/soundboard.html')">Soundboard</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/peopleplayground.html')">People Playground</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/cookieclicker.html')">Cookie Clicker</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/idlebreakout.html')">Idle Breakout</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/sandboxels.html')">Sandboxels</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/slope.html')">Slope Plus</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/tunnelrush.html')">Tunnel Rush</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/madalinstuntcars2.html')">Madalin Stunt Cars 2</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/slitherio.html')">Slither.io</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/monkeymart.html')">Monkey Mart</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/codeeditor.html')">Code Editor</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/baldisbasics.html')">Baldi's Basics</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/retrobowl.html')">Retro Bowl</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/gorillatag.html')">Gorilla Tag</button>
+  <button onclick="openGame('https://raw.githubusercontent.com/charlieomg/Portable/main/historyspam.html')">Spam History</button>
+</div>
+
+<script>
+function checkPassword() {
+  if (document.getElementById("pw").value === "youtomato1231") {
+    document.getElementById("overlay").style.display = "none";
+    document.getElementById("menu").style.display = "block";
+  } else {
+    document.getElementById("overlayMsg").textContent = "Wrong password";
+  }
+}
+
+// Instantly overwrite a new tab with the game HTML
+async function openGame(url) {
+  const win = window.open("about:blank", "_blank");
+  if (!win) return alert("Popup blocked. Allow popups.");
+
+  try {
+    const res = await fetch(url);
+    const html = await res.text();
+    win.document.open();
+    win.document.write(html);
+    win.document.close();
+  } catch {
+    win.document.write("<h1>Failed to load game</h1>");
+    win.document.close();
+  }
+}
+</script>
+
+</body>
+</html>
