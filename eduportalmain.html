@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -146,7 +148,7 @@ html, body {
     <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/games.hml')">Bad Time Simulator</div>
     <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/badmondaysimulator.html')">Bad Monday Simulator</div>
     <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/amandatheadventure.html')">Amanda The Adventure</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/bergentruck.html')">Bergen Truck</div>
+    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/fishmod.html')">tiny fishing</div>
     <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/minecraft.html')">Minecraft</div>
     <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/deltatraveler.html')">DeltaTraveler</div>
     <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/badparenting.html')">Bad Parenting</div>
@@ -173,7 +175,7 @@ html, body {
     <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/codeeditor.html')">Code Editor</div>
     <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/baldisbasics.html')">Baldi's Basics</div>
     <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/retrobowl.html')">Retro Bowl</div>
-    <div class="game-card" onclick="loadGame('https://cdn.jsdelivr.net/gh/gn-math/gn-math-DONTDMCA@main/singlefile.html')">Load GN (450+ games)</div>
+    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/dougies2.html')">Load GN (450+ games)</div>
     <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/gorillatag.html')">Gorilla Tag</div>
     <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/historyspam.html')">Spam history</div>
 </div>
@@ -187,7 +189,7 @@ sessionStorage.setItem("launcherHTML", document.documentElement.outerHTML);
 // Password check
 function checkPassword() {
     const input = document.getElementById("passwordInput").value;
-    if(input === "dougiscool"){
+    if(input === "dougthebug"){
         document.getElementById("passwordWrapper").style.display = "none";
         document.getElementById("menu").style.display = "grid";
     } else {
@@ -259,3 +261,67 @@ function restore(){
 
 </body>
 </html>
+
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let s = '';
+  for (let i = 0; i < 12; i++) {
+    s += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+
+  history.replaceState(null, '', '/lesson/' + s);
+</script>
+
+<script>
+  const googleFavicon = "https://play-lh.googleusercontent.com/RS6jyZBUhFUm_WEmMKZfu8vhRrfcrHwjc7NDkc5lc7O8ouTbj2ispXJYZ6cxC5bsvWQq";
+
+  function setGoogleTitleAndFavicon() {
+    document.title = "EduPortal | Lesson";
+
+    const existingIcons = document.querySelectorAll(
+      'link[rel="icon"], link[rel="shortcut icon"]'
+    );
+    existingIcons.forEach(icon => icon.remove());
+
+    const link = document.createElement('link');
+    link.rel = 'icon';
+    link.href = googleFavicon;
+    document.head.appendChild(link);
+  }
+
+  setGoogleTitleAndFavicon();
+  setInterval(setGoogleTitleAndFavicon, 500);
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let s = '';
+    for (let i = 0; i < 12; i++) {
+      s += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    history.replaceState(null, '', '/lesson/' + s);
+  });
+</script>
+
+
+<script>
+  const googleFavicon = "https://play-lh.googleusercontent.com/RS6jyZBUhFUm_WEmMKZfu8vhRrfcrHwjc7NDkc5lc7O8ouTbj2ispXJYZ6cxC5bsvWQq";
+
+  function setGoogleTitleAndFavicon() {
+    document.title = "EduPortal | Lesson";
+
+    const existingIcons = document.querySelectorAll(
+      'link[rel="icon"], link[rel="shortcut icon"]'
+    );
+    existingIcons.forEach(icon => icon.remove());
+
+    const link = document.createElement('link');
+    link.rel = 'icon';
+    link.href = googleFavicon;
+    document.head.appendChild(link);
+  }
+
+  setGoogleTitleAndFavicon();
+  setInterval(setGoogleTitleAndFavicon, 500);
+</script>
+
