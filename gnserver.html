@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Server Selector</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #0f172a;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .container {
+        background: #020617;
+        padding: 20px;
+        border-radius: 10px;
+        width: 420px;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    .servers {
+        overflow-y: auto;
+        padding-right: 5px;
+    }
+    .server {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #020617;
+        border: 1px solid #1e293b;
+        padding: 8px;
+        margin-bottom: 8px;
+        border-radius: 6px;
+    }
+    button {
+        background: #2563eb;
+        border: none;
+        color: white;
+        padding: 6px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #1d4ed8;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Buy a server, 3$!</h2>
+    <div class="servers" id="servers"></div>
+</div>
+
+<script>
+const SITE_URL =
+"https://raw.githubusercontent.com/charlieomg/Portable/refs/heads/main/dougies2.html";
+
+const serverPasswords = {
+    "Server 1": "expensetomato",
+    "Server 2": "quietbanana",
+    "Server 3": "blueberrycarrot",
+    "Server 4": "fastapple",
+    "Server 5": "silentgrape",
+    "Server 6": "goldenpotato",
+    "Server 7": "darkavocado",
+    "Server 8": "freshlemon",
+    "Server 9": "sweetmango",
+    "Server 10": "tinyonion",
+
+    "Server 11": "brightraspberry",
+    "Server 12": "coolcucumber",
+    "Server 13": "softpeach",
+    "Server 14": "loudpepper",
+    "Server 15": "smoothmelon",
+    "Server 16": "greenlettuce",
+    "Server 17": "sharpkiwi",
+    "Server 18": "warmorange",
+    "Server 19": "clearpineapple",
+    "Server 20": "redstrawberry",
+
+    "Server 21": "quickcherry",
+    "Server 22": "lazybroccoli",
+    "Server 23": "brightcorn",
+    "Server 24": "coldplum",
+    "Server 25": "softspinach",
+    "Server 26": "sweetpear",
+    "Server 27": "roundradish",
+    "Server 28": "boldgarlic",
+    "Server 29": "freshlime",
+    "Server 30": "crispcelery",
+
+    "Server 31": "juicygrapefruit",
+    "Server 32": "smoothpapaya",
+    "Server 33": "tinyturnip",
+    "Server 34": "fastfig",
+    "Server 35": "goldenapricot",
+    "Server 36": "coolzucchini",
+    "Server 37": "darkolive",
+    "Server 38": "sweetdate",
+    "Server 39": "firmbeet",
+    "Server 40": "brightleek",
+
+    "Server 41": "softmushroom",
+    "Server 42": "quickraspberry",
+    "Server 43": "warmyam",
+    "Server 44": "loudpumpkin",
+    "Server 45": "freshparsley",
+    "Server 46": "smoothcoconut",
+    "Server 47": "cleartangerine",
+    "Server 48": "sharponion",
+    "Server 49": "brightsquash",
+    "Server 50": "coolmint",
+
+    "Server 51": "sweetblueberry",
+    "Server 52": "softasparagus",
+    "Server 53": "quicknectarine",
+    "Server 54": "goldenkale",
+    "Server 55": "tinyshallot",
+    "Server 56": "freshpomegranate",
+    "Server 57": "darkginger",
+    "Server 58": "smoothblackberry",
+    "Server 59": "warmchili",
+    "Server 60": "clearwatermelon"
+};
+
+function openServer(serverName) {
+    const input = prompt(`Enter password for ${serverName}:`);
+    if (!input) return;
+
+    if (input === serverPasswords[serverName]) {
+        fetch(SITE_URL)
+            .then(res => res.text())
+            .then(html => {
+                const win = window.open("about:blank");
+                win.document.open();
+                win.document.write(html);
+                win.document.close();
+            });
+    } else {
+        alert("Incorrect password.");
+    }
+}
+
+const serversDiv = document.getElementById("servers");
+
+Object.keys(serverPasswords).forEach(server => {
+    const div = document.createElement("div");
+    div.className = "server";
+    div.innerHTML = `
+        <span>${server}</span>
+        <button onclick="openServer('${server}')">Open</button>
+    `;
+    serversDiv.appendChild(div);
+});
+</script>
+
+</body>
+</html>
