@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CrazyGames Clone - Private Games</title>
+<style>
+  /* Reset */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #f4f0fb; color: #333; }
+
+  /* HEADER */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #4a00e0; /* Purple header */
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    color: white;
+  }
+  .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-container img {
+    height: 40px;
+  }
+  nav a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+  }
+  nav a:hover { color: #e0b3ff; }
+
+  /* SEARCH BAR */
+  .search-bar {
+    margin-left: 20px;
+    flex: 1;
+    max-width: 400px;
+  }
+  .search-bar input {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: none;
+    font-size: 14px;
+    outline: none;
+  }
+
+  /* MAIN CONTENT */
+  main {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 10px;
+  }
+  
+  .section-title {
+    color: #4a00e0;
+    font-size: 24px;
+    margin-bottom: 15px;
+    text-align: left;
+  }
+
+  .button-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 15px;
+    margin-bottom: 40px;
+  }
+
+  .button-grid button {
+    padding: 12px;
+    background: #4a00e0;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    transition: background 0.3s;
+  }
+  .button-grid button:hover {
+    background: #6a33ff;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 20px;
+    background: #4a00e0;
+    color: white;
+    margin-top: 40px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-container">
+    <img src="https://www.crazygames.com/images/logo/logo-text.svg" alt="CrazyGames Logo">
+    <img src="https://www.crazygames.com/images/logo/themed/superbowl-logo.svg" alt="SuperBowl Logo">
+  </div>
+
+  <div class="search-bar">
+    <input type="text" placeholder="Search games...">
+  </div>
+
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">All Games</a>
+    <a href="#">Categories</a>
+    <a href="#">Top Games</a>
+  </nav>
+</header>
+
+<main>
+  <div class="section-title">🔐 Private Game Collection</div>
+
+  <div class="button-grid">
+    <button onclick="openGame('https://class-76.github.io/index.html')">class76</button>
+    <button onclick="openGame('https://nb-ga.github.io/games-site/')">nb-ga</button>
+    <button onclick="openGame('https://gibbat2.github.io/Games/')">gibbat2</button>
+    <button onclick="openGame('https://geometry-games.io/dashmetry')">dashmetry</button>
+    <button onclick="openGame('https://unblocked-games.org/')">UnblockiGamesi</button>
+    <button onclick="openGame('https://www.hoodamath.com/games/unblocked.html#gsc.tab=0')">HoodaMath</button>
+    <button onclick="openGame('https://cloud.freezenova.com/index.html')">freezenova</button>
+    <button onclick="openGame('https://storage.y8.com/y8-studio/unity_webgl/gamosoftstudios/y8_snowrider3d_y8_32bt_1_4/index.html?key=6842727&value=186886')">snow rider 3d</button>
+    <button onclick="openGame('https://coolbrnd.com/all-games.html')">coolbrnd</button>
+    <button onclick="openGame('https://totallyscience.app/games/')">totally science</button>
+    <button onclick="openGame('https://www.myinstants.com/en/categories/sound%20effects/us/')">myinstants</button>
+    <button onclick="openGame('https://dev.desmos.live.cdn.cloudflare.net/')">space proxy</button>
+    <button onclick="openGame('https://blog.artweb.website.cdn.cloudflare.net/')">DayDreamX</button>
+  </div>
+</main>
+
+<footer>
+  SevenEleven UBypass by Doug | CrazyGames 2.0
+</footer>
+
+<script>
+function openGame(url) {
+  const win = window.open("", "_blank");
+  const iframe = win.document.createElement("iframe");
+  iframe.src = url;
+  iframe.style.width = "100%";
+  iframe.style.height = "100%";
+  iframe.style.border = "none";
+  win.document.body.style.margin = "0";
+  win.document.body.appendChild(iframe);
+}
+</script>
+
+</body>
+</html>
