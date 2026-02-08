@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PrivateHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family:'Roboto',sans-serif;
+  color:#fff;
+  overflow-x:hidden;
+  background: linear-gradient(-45deg,#0f2027,#2c5364,#1f1c2c,#4a00e0);
+  background-size:400% 400%;
+  animation: gradientBG 20s ease infinite;
+}
+
+/* PARTICLES */
+#particles, #clickParticles {
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* HEADER */
+header {
+  position:fixed;
+  top:0; left:0;
+  width:100%;
+  padding:15px 50px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  backdrop-filter:blur(20px);
+  background:rgba(0,0,0,0.35);
+  box-shadow:0 0 30px #ff00ff inset,0 0 30px #6a33ff inset;
+  z-index:1000;
+}
+
+.logo {
+  font-size:32px;
+  font-weight:700;
+  letter-spacing:2px;
+  background:linear-gradient(90deg,#ff00ff,#6a33ff,#00ffff,#ff0080);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:logoGradient 6s linear infinite;
+}
+
+nav button {
+  margin-left:15px;
+  padding:12px 28px;
+  border:none;
+  border-radius:15px;
+  cursor:pointer;
+  background:linear-gradient(90deg,#6a33ff,#ff00ff);
+  font-weight:500;
+  transition:.4s;
+}
+
+nav button:hover {
+  transform:scale(1.08);
+  box-shadow:0 0 35px #ff00ff;
+}
+
+/* LOCK SCREEN */
+#lockScreen {
+  position:fixed;
+  inset:0;
+  background:#111;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+
+.lock-box {
+  width:400px;
+  padding:55px 45px;
+  border-radius:30px;
+  background:rgba(30,30,30,.95);
+  box-shadow:0 0 60px #6a33ff,0 0 40px #ff00ff inset;
+  text-align:center;
+}
+
+.lock-box input {
+  width:100%;
+  padding:16px;
+  margin-bottom:20px;
+  border:none;
+  border-radius:12px;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+}
+
+.lock-box button {
+  width:100%;
+  padding:16px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  background:linear-gradient(90deg,#6a33ff,#ff00ff);
+}
+
+.error {
+  color:#ff6b6b;
+  display:none;
+  margin-top:10px;
+}
+
+/* CONTENT */
+#content {
+  display:none;
+  max-width:1400px;
+  margin:auto;
+  padding:150px 50px 50px;
+  position:relative;
+  z-index:1;
+}
+
+#content h1 {
+  text-align:center;
+  font-size:42px;
+  margin-bottom:10px;
+}
+
+#content p {
+  text-align:center;
+  color:#ccc;
+  margin-bottom:50px;
+}
+
+/* GAME GRID */
+.game-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:30px;
+}
+
+.game-card {
+  position:relative;
+  padding:40px 25px;
+  text-align:center;
+  border-radius:30px;
+  cursor:pointer;
+  background:rgba(255,255,255,.02);
+  border:2px solid rgba(255,255,255,.1);
+  transition:.4s;
+}
+
+.game-card::before {
+  content:'';
+  position:absolute;
+  inset:-50%;
+  background:linear-gradient(45deg,#ff00ff,#6a33ff,#00ffff,#ff0080);
+  filter:blur(25px);
+  opacity:.3;
+  z-index:0;
+  transition:.5s;
+}
+
+.game-card span {
+  position:relative;
+  z-index:1;
+  font-weight:700;
+}
+
+.game-card:hover {
+  transform:translateY(-10px) scale(1.05);
+  box-shadow:0 0 45px #ff00ff;
+}
+
+/* ANIMATIONS */
+@keyframes logoGradient {
+  0%{background-position:0%}
+  100%{background-position:200%}
+}
+@keyframes gradientBG {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="particles"></canvas>
+<canvas id="clickParticles"></canvas>
+
+<header>
+  <div class="logo">🔥 PrivateHub</div>
+  <nav>
+    <button onclick="document.getElementById('content').scrollIntoView({behavior:'smooth'})">Games</button>
+  </nav>
+</header>
+
+<div id="lockScreen">
+  <div class="lock-box">
+    <h2>🔒 Private Access</h2>
+    <input type="password" id="passwordInput" placeholder="Password">
+    <button onclick="checkPassword()">Unlock</button>
+    <div class="error" id="errorMsg">Wrong password</div>
+  </div>
+</div>
+
+<div id="content">
+  <h1>AstroFlax Bypasser (31,327+ games)</h1>
+  <p>DO NOT LEAK</p>
+
+  <div class="game-grid">
+    <div class="game-card" onclick="openGame('https://class-76.github.io/index.html')"><span>Class76</span></div>
+    <div class="game-card" onclick="openGame('https://nb-ga.github.io/games-site/')"><span>NB-GA</span></div>
+    <div class="game-card" onclick="openGame('https://gibbat2.github.io/Games/')"><span>Gibbat2</span></div>
+    <div class="game-card" onclick="openGame('https://geometry-games.io/dashmetry')"><span>Dashmetry</span></div>
+    <div class="game-card" onclick="openGame('https://unblocked-games.org/')"><span>Unblocked Games</span></div>
+    <div class="game-card" onclick="openGame('https://www.hoodamath.com/games/unblocked.html')"><span>HoodaMath</span></div>
+    <div class="game-card" onclick="openGame('https://cloud.freezenova.com')"><span>Freezenova</span></div>
+    <div class="game-card" onclick="openGame('https://coolbrnd.com/all-games.html')"><span>Coolbrnd</span></div>
+    <div class="game-card" onclick="openGame('https://totallyscience.app/games/')"><span>Totally Science</span></div>
+    <div class="game-card" onclick="openGame('https://canvasarts.org/g')"><span>CanvasArts</span></div>
+    <div class="game-card" onclick="openGame('https://gamaverse.com/')"><span>Gamaverse</span></div>
+<div class="game-card" onclick="openGame('https://githubgames.gitlab.io/game/')"><span>AGames</span>
+  </div>
+</div>
+
+<script>
+const PASSWORD="googleplex";
+
+function checkPassword(){
+  if(passwordInput.value===PASSWORD){
+    lockScreen.style.display="none";
+    content.style.display="block";
+  } else errorMsg.style.display="block";
+}
+
+function openGame(url){
+  const win=window.open("","_blank");
+  const iframe=win.document.createElement("iframe");
+  iframe.src=url;
+  iframe.style.width="100%";
+  iframe.style.height="100%";
+  iframe.style.border="none";
+  win.document.body.style.margin="0";
+  win.document.body.appendChild(iframe);
+}
+
+/* PARTICLES */
+const canvas=particles,ctx=canvas.getContext("2d");
+let w=canvas.width=innerWidth,h=canvas.height=innerHeight;
+window.onresize=()=>{w=canvas.width=innerWidth;h=canvas.height=innerHeight};
+
+const parts=[...Array(160)].map(()=>({
+  x:Math.random()*w,y:Math.random()*h,
+  dx:(Math.random()-.5),dy:(Math.random()-.5)
+}));
+
+(function animate(){
+  ctx.clearRect(0,0,w,h);
+  parts.forEach(p=>{
+    p.x+=p.dx;p.y+=p.dy;
+    if(p.x<0||p.x>w)p.dx*=-1;
+    if(p.y<0||p.y>h)p.dy*=-1;
+    ctx.fillStyle="#ff00ff";
+    ctx.beginPath();ctx.arc(p.x,p.y,2,0,Math.PI*2);ctx.fill();
+  });
+  requestAnimationFrame(animate);
+})();
+</script>
+
+</body>
+</html>
