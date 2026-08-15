@@ -1,326 +1,493 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>EduPortal Launcher</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="https://play-lh.googleusercontent.com/RS6jyZBUhFUm_WEmMKZfu8vhRrfcrHwjc7NDkc5lc7O8ouTbj2ispXJYZ6cxC5bsvWQq">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>profile.me - Student Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {--bg: #0b0f19; --card: #131c2e; --card-hover: #1e293b; --accent: #38bdf8; --accent-glow: rgba(56,189,248,0.25); --text: #f8fafc; --muted: #94a3b8; --danger: #ef4444; --warning: #f59e0b; --border: rgba(255,255,255,0.06);}
+        * {box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif;}
+        body {background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; position: relative;}
+        
+        /* Tier Color Variables */
+        :root {
+            --tier-bronze: #cd7f32;
+            --tier-silver: #94a3b8;
+            --tier-gold: #fbbf24;
+            --tier-premium: #a855f7;
+            --tier-admin: #ef4444;
+        }
 
-<style>
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    font-family: 'Roboto', sans-serif;
-    background: #f5f5f5;
-    color: #111;
-    overflow-x: hidden;
-}
+        /* Background Ambient Glow */
+        .bg-glow {position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(56,189,248,0.07) 0%, rgba(15,23,42,0) 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: -1; pointer-events: none;}
 
-/* Password/Login Overlay */
-#passwordWrapper {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: #1a73e8;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    color: white;
-}
+        /* Login Screen Overlay */
+        #loginScreen {position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 3000; transition: opacity 0.5s ease; overflow-y: auto; padding: 20px;}
+        .login-box {background: var(--card); padding: 40px; border-radius: 20px; text-align: center; max-width: 520px; width: 100%; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); display: flex; flex-direction: column; gap: 20px;}
+        .login-box h3 {font-size: 1.4rem; font-weight: 600;}
+        .login-box p {color: var(--muted); font-size: 0.85rem;}
+        .login-input {background: var(--card-hover); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; color: var(--text); font-size: 1rem; width: 100%; outline: none; transition: 0.2s; text-align: center;}
+        .login-input:focus {border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow);}
+        .login-btn {background: linear-gradient(135deg, var(--accent), #0284c7); color: #0b0f19; border: none; padding: 12px; font-size: 1rem; font-weight: 600; border-radius: 10px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 12px var(--accent-glow);}
+        .login-btn:hover {opacity: 0.9; transform: translateY(-1px);}
+        #loginError {color: var(--danger); font-size: 0.85rem; height: 15px;}
+        
+        .plans-info {margin-top: 10px; text-align: left; border-top: 1px solid var(--border); padding-top: 15px; display: flex; flex-direction: column; gap: 8px;}
+        .plan-item {font-size: 0.8rem; color: var(--muted); display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border);}
+        .plan-item span strong {color: var(--text);}
 
-#passwordCard {
-    background: white;
-    color: #111;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    text-align: center;
-    min-width: 300px;
-    max-width: 400px;
-}
+        /* Auth Screen Overlay */
+        #authScreen {position: fixed; inset: 0; background: var(--bg); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; transition: opacity 0.5s ease; gap: 20px;}
+        .auth-box {background: var(--card); padding: 40px; border-radius: 20px; text-align: center; max-width: 400px; width: 90%; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); display: flex; flex-direction: column; align-items: center; gap: 20px;}
+        .auth-spinner {width: 45px; height: 45px; border: 3px solid rgba(56,189,248,0.1); border-top: 3px solid var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite;}
+        #authText {color: var(--muted); font-size: 0.95rem; font-weight: 500;}
 
-#passwordCard h2 {
-    margin-bottom: 20px;
-}
+        header {position: absolute; top: 25px; left: 35px; display: flex; align-items: center; gap: 10px;}
+        header h1 {font-size: 1.4rem; font-weight: 600; letter-spacing: -0.5px;} header span {color: var(--accent);}
+        .header-badge {font-size: 0.75rem; background: rgba(56,189,248,0.1); color: var(--accent); padding: 3px 8px; border-radius: 20px; border: 1px solid rgba(56,189,248,0.2); display: flex; align-items: center; gap: 5px;}
 
-#passwordCard input {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-}
+        .dashboard-container {display: flex; gap: 25px; align-items: flex-start; max-width: 850px; width: 95%; justify-content: center;}
+        
+        .dashboard {background: var(--card); padding: 45px 35px; border-radius: 20px; text-align: center; width: 480px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); position: relative; backdrop-filter: blur(10px); opacity: 0; transform: translateY(10px); transition: all 0.6s ease; display: flex; flex-direction: column; align-items: center;}
+        .dashboard.visible {opacity: 1; transform: translateY(0);}
+        
+        .avatar-container {position: relative; width: 70px; height: 70px; margin: 0 auto 20px; background: linear-gradient(135deg, var(--accent), #0284c7); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: #0b0f19; box-shadow: 0 0 20px var(--accent-glow);}
+        .status-dot {position: absolute; bottom: 2px; right: 2px; width: 14px; height: 14px; background: #22c55e; border: 3px solid var(--card); border-radius: 50%;}
 
-#passwordCard button {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    background: #1a73e8;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s;
-}
+        .dashboard h2 {margin-bottom: 8px; font-size: 1.4rem; font-weight: 600;} 
+        .dashboard p {color: var(--muted); font-size: 0.9rem; margin-bottom: 30px; line-height: 1.5;}
+        
+        .server-group {display: flex; flex-direction: column; gap: 12px; width: 100%;}
+        .server-btn {background: var(--card-hover); color: var(--text); border: 1px solid var(--border); padding: 14px 20px; font-size: 0.95rem; font-weight: 500; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; width: 100%; transition: all 0.25s ease;}
+        .server-btn-left {display: flex; align-items: center; gap: 14px;}
+        .server-btn i {font-size: 1.1rem; color: var(--accent); width: 22px; text-align: center;}
+        
+        .server-btn:hover {background: rgba(56,189,248,0.08); border-color: rgba(56,189,248,0.3); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.2);}
+        .server-btn:hover .arrow-icon {transform: translateX(3px); color: var(--accent);}
+        .arrow-icon {color: var(--muted); font-size: 0.85rem; transition: 0.2s;}
 
-#passwordCard button:hover {
-    background: #155ab6;
-}
+        .server-tag {font-size: 0.7rem; background: rgba(245,158,11,0.15); color: var(--warning); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(245,158,11,0.3); margin-left: 8px;}
 
-#passwordMessage {
-    margin-top: 12px;
-    color: red;
-    font-weight: bold;
-}
+        /* Big Plan Banner at Bottom of Dashboard */
+        .dashboard-plan-banner {margin-top: 25px; width: 100%; background: rgba(56,189,248,0.05); border: 1px solid rgba(56,189,248,0.2); border-radius: 14px; padding: 15px; text-align: center; transition: 0.3s;}
+        .dashboard-plan-banner span {display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 4px;}
+        .dashboard-plan-banner h3 {font-size: 1.5rem; font-weight: 700;}
 
-/* Games Menu / Tiles */
-#menu {
-    display: none;
-    padding: 40px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-    background: #f5f5f5;
-    max-height: 100vh;
-    overflow-y: auto;
-}
+        /* Side Plans Panel */
+        .side-plans-panel {background: var(--card); padding: 30px 25px; border-radius: 20px; width: 280px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); opacity: 0; transform: translateY(10px); transition: all 0.6s ease; display: flex; flex-direction: column; gap: 12px;}
+        .side-plans-panel.visible {opacity: 1; transform: translateY(0);}
+        .side-plans-panel h4 {font-size: 1.1rem; font-weight: 600; border-bottom: 1px solid var(--border); padding-bottom: 10px; display: flex; align-items: center; gap: 8px;}
+        
+        .side-plan-card {background: var(--card-hover); border: 1px solid var(--border); padding: 12px 14px; border-radius: 10px; display: flex; flex-direction: column; gap: 4px; transition: 0.2s;}
+        .side-plan-card .plan-name-row {display: flex; justify-content: space-between; font-weight: 600; font-size: 0.9rem;}
+        .side-plan-card .plan-desc {font-size: 0.75rem; color: var(--muted);}
 
-.game-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
+        /* Tier Color Coding Classes */
+        .tier-bronze-theme {color: var(--tier-bronze) !important;}
+        .tier-silver-theme {color: var(--tier-silver) !important;}
+        .tier-gold-theme {color: var(--tier-gold) !important;}
+        .tier-premium-theme {color: var(--tier-premium) !important;}
+        .tier-admin-theme {color: var(--tier-admin) !important;}
 
-.game-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-}
+        .side-plan-card.active-side-plan.bronze {border-color: var(--tier-bronze); background: rgba(205, 127, 50, 0.08); box-shadow: 0 0 12px rgba(205, 127, 50, 0.25);}
+        .side-plan-card.active-side-plan.silver {border-color: var(--tier-silver); background: rgba(148, 163, 184, 0.08); box-shadow: 0 0 12px rgba(148, 163, 184, 0.25);}
+        .side-plan-card.active-side-plan.gold {border-color: var(--tier-gold); background: rgba(251, 191, 36, 0.08); box-shadow: 0 0 12px rgba(251, 191, 36, 0.25);}
+        .side-plan-card.active-side-plan.premium {border-color: var(--tier-premium); background: rgba(168, 85, 247, 0.08); box-shadow: 0 0 12px rgba(168, 85, 247, 0.25);}
+        .side-plan-card.active-side-plan.admin {border-color: var(--tier-admin); background: rgba(239, 68, 68, 0.08); box-shadow: 0 0 12px rgba(239, 68, 68, 0.25);}
 
-.game-card h3 {
-    margin-top: 10px;
-    font-size: 18px;
-}
-
-/* Fullscreen Button */
-#fullscreenBtn {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    z-index: 99999;
-    background: #1a73e8;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    font-size: 18px;
-    cursor: pointer;
-    border-radius: 6px;
-}
-</style>
+        #workspace {position: fixed; inset: 0; background: var(--bg); display: none; z-index: 1000; flex-direction: row;}
+        .sidebar-tools {width: 70px; background: var(--card); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 20px 0; gap: 15px; overflow-y: auto;}
+        .sidebar-tools::-webkit-scrollbar {width: 4px;} .sidebar-tools::-webkit-scrollbar-thumb {background: rgba(255,255,255,0.1); border-radius: 4px;}
+        .tool-icon {width: 45px; height: 45px; border-radius: 12px; background: var(--card-hover); color: var(--muted); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; font-size: 1.1rem; border: 1px solid var(--border); flex-shrink: 0; position: relative;}
+        .tool-icon:hover {background: rgba(255,255,255,0.08); color: var(--text); border-color: rgba(255,255,255,0.15);}
+        .tool-icon.danger:hover {background: rgba(239,68,68,0.15); color: var(--danger); border-color: rgba(239,68,68,0.3);}
+        .tool-icon.active-server {background: var(--accent); color: #0b0f19; border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow);}
+        
+        .divider {width: 35px; height: 1px; background: var(--border); margin: 5px 0;}
+        .viewport-container {flex: 1; position: relative; height: 100%; display: flex; align-items: center; justify-content: center;}
+        #loader {position: absolute; display: flex; flex-direction: column; align-items: center; gap: 15px; z-index: 10; text-align: center; padding: 0 20px;}
+        .spinner {width: 45px; height: 45px; border: 3px solid rgba(56,189,248,0.1); border-top: 3px solid var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite;}
+        #loader p {color: var(--muted); font-size: 0.9rem; font-weight: 500;}
+        iframe {width: 100%; height: 100%; border: none; opacity: 0; transition: opacity 0.5s;}
+        @keyframes spin {to {transform: rotate(360deg);}}
+    </style>
 </head>
-
 <body>
-
-<!-- Login Overlay -->
-<div id="passwordWrapper">
-    <div id="passwordCard">
-        <h2>Server 3 Login</h2>
-        <input type="password" id="passwordInput" placeholder="Enter your password">
-        <button onclick="checkPassword()">Login</button>
-        <p id="passwordMessage"></p>
+    <!-- Login Screen Overlay -->
+    <div id="loginScreen">
+        <div class="login-box">
+            <h3>Portal Access</h3>
+            <p>Enter your plan password to continue.</p>
+            <input type="password" id="passwordInput" class="login-input" placeholder="Password" autofocus onkeydown="if(event.key === 'Enter') checkPassword()">
+            <div id="loginError"></div>
+            <button class="login-btn" onclick="checkPassword()"><i class="fa-solid fa-key" style="margin-right: 8px;"></i>Unlock Portal</button>
+            
+            <div class="plans-info" id="loginPlansList">
+                <div class="plan-item"><span><strong class="tier-bronze-theme">Rookie / Bronze</strong> ($20)</span> <span>1 Doge Server</span></div>
+                <div class="plan-item"><span><strong class="tier-silver-theme">Silver</strong> ($40)</span> <span>All Doge & Lucide</span></div>
+                <div class="plan-item"><span><strong class="tier-gold-theme">Gold</strong> ($50)</span> <span>All Servers (1 Synapse)</span></div>
+                <div class="plan-item"><span><strong class="tier-premium-theme">Premium</strong> ($70)</span> <span>Everything</span></div>
+            </div>
+        </div>
     </div>
-</div>
 
-<!-- Games Menu -->
-<div id="menu">
-    <!-- All your games included -->
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/games.hml')">Bad Time Simulator</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/badmondaysimulator.html')">Bad Monday Simulator</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/amandatheadventure.html')">Amanda The Adventure</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/fishmod.html')">tiny fishing</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/minecraft.html')">Minecraft</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/deltatraveler.html')">DeltaTraveler</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/badparenting.html')">Bad Parenting</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/bloodmoney.html')">Blood Money</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/bitlife.html')">BitLife</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/buckshotroulette.html')">Buckshot Roulette</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/refs/heads/main/legendofzeldaocarinaoftime')">Legend of Zelda: Ocarina of Time</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/cubefield.html')">Cubefield</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/geometrydash.html')">Geometry Dash</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/1v1lol.html')">1v1.LOL</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/supermario64.html')">Super Mario 64</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/supermariobros.html')">Super Mario Bros</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/jetpackjoyride.html')">Jetpack Joyride</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/soundboard.html')">Soundboard</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/peopleplayground.html')">People Playground</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/cookieclicker.html')">Cookie Clicker</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/idlebreakout.html')">Idle Breakout</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/sandboxels.html')">Sandboxels</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/slope.html')">Slope Plus</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/tunnelrush.html')">Tunnel Rush</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/madalinstuntcars2.html')">Madalin Stunt Cars 2</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/slitherio.html')">Slither.io</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/monkeymart.html')">Monkey Mart</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/codeeditor.html')">Code Editor</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/baldisbasics.html')">Baldi's Basics</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/retrobowl.html')">Retro Bowl</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/dougies2.html')">Load GN (450+ games)</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/gorillatag.html')">Gorilla Tag</div>
-    <div class="game-card" onclick="loadGame('https://raw.githubusercontent.com/charlieomg/Portable/main/historyspam.html')">Spam history</div>
-</div>
+    <!-- Authentication Loading Screen -->
+    <div id="authScreen">
+        <div class="auth-box">
+            <div class="auth-spinner" id="authSpinner"></div>
+            <p id="authText">Authenticating user...</p>
+        </div>
+    </div>
 
-<button id="fullscreenBtn" onclick="toggleFullscreen()">⛶</button>
+    <div class="bg-glow"></div>
+    <header>
+        <h1>profile<span>.me</span></h1>
+        <div class="header-badge" id="planBadge"><i class="fa-solid fa-shield-halved"></i> v2.4 Secure</div>
+    </header>
 
-<script>
-// ===== Save launcher for restore =====
-sessionStorage.setItem("launcherHTML", document.documentElement.outerHTML);
+    <div class="dashboard-container">
+        <div class="dashboard" id="mainDashboard">
+            <div class="avatar-container">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <div class="status-dot" title="System Online"></div>
+            </div>
+            <h2>Student Workspace</h2>
+            <p>if stuff is broken tell me</p>
+            
+            <div class="server-group" id="serverButtonGroup">
+                <button class="server-btn" id="btnSynapse" onclick="initPlatform(0)">
+                    <div class="server-btn-left">
+                        <i class="fa-solid fa-server"></i>
+                        <span>Synapse Servers</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right arrow-icon"></i>
+                </button>
+                
+                <button class="server-btn" id="btnDoge" onclick="initPlatform(1)">
+                    <div class="server-btn-left">
+                        <i class="fa-solid fa-shield-dog"></i>
+                        <span>DogeUB Servers</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right arrow-icon"></i>
+                </button>
+                
+                <button class="server-btn" id="btnLucide" onclick="initPlatform(2)">
+                    <div class="server-btn-left">
+                        <i class="fa-solid fa-cube"></i>
+                        <span>Lucide Server <span class="server-tag">Broken</span></span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right arrow-icon"></i>
+                </button>
+            </div>
 
-// Password check
-function checkPassword() {
-    const input = document.getElementById("passwordInput").value;
-    if(input === "thisisaadminserver"){
-        document.getElementById("passwordWrapper").style.display = "none";
-        document.getElementById("menu").style.display = "grid";
-    } else {
-        document.getElementById("passwordMessage").textContent = "Incorrect notified GoGuardian!";
-    }
-}
+            <!-- Big Plan Banner at the bottom -->
+            <div class="dashboard-plan-banner" id="dashboardBanner">
+                <span>Current Active Tier</span>
+                <h3 id="bigPlanBannerText" class="tier-bronze-theme">Plan: Bronze</h3>
+            </div>
+        </div>
 
-// Load game
-async function loadGame(url){
-    const r = await fetch(url);
-    const t = await r.text();
-    document.open();
-    document.write(t);
-    document.close();
-    window.addEventListener("load", ()=>{
-        addClose();
-        addFullscreen();
-    });
-}
+        <!-- Side Plans Panel (next to server list) -->
+        <div class="side-plans-panel" id="sidePlansPanel">
+            <h4><i class="fa-solid fa-layer-group" style="color: var(--accent);"></i> Available Plans</h4>
+            
+            <div class="side-plan-card" id="sidePlanBronze">
+                <div class="plan-name-row"><span class="tier-bronze-theme">Rookie / Bronze</span><span>$20</span></div>
+                <div class="plan-desc">1 Doge Server</div>
+            </div>
+            
+            <div class="side-plan-card" id="sidePlanSilver">
+                <div class="plan-name-row"><span class="tier-silver-theme">Silver</span><span>$40</span></div>
+                <div class="plan-desc">All Doge & Lucide</div>
+            </div>
+            
+            <div class="side-plan-card" id="sidePlanGold">
+                <div class="plan-name-row"><span class="tier-gold-theme">Gold</span><span>$50</span></div>
+                <div class="plan-desc">All Servers, 1 Synapse</div>
+            </div>
+            
+            <div class="side-plan-card" id="sidePlanPremium">
+                <div class="plan-name-row"><span class="tier-premium-theme">Premium</span><span>$70</span></div>
+                <div class="plan-desc">Everything Unlocked</div>
+            </div>
+            
+            <div class="side-plan-card" id="sidePlanAdmin" style="display:none;">
+                <div class="plan-name-row"><span class="tier-admin-theme">Admin</span><span>$120</span></div>
+                <div class="plan-desc" id="adminPasswordsList" style="font-size:0.7rem; color:var(--muted); margin-top:4px; line-height: 1.4;"></div>
+            </div>
+        </div>
+    </div>
 
-// Close button
-function addClose(){
-    const b = document.createElement("button");
-    b.textContent = "✖";
-    b.style.cssText = `
-        position:fixed;top:10px;right:10px;
-        z-index:999999;background:red;color:#fff;
-        border:none;padding:6px 10px;font-size:18px;
-        cursor:pointer;
-    `;
-    b.onclick = restore;
-    document.body.appendChild(b);
-}
+    <div id="workspace">
+        <div class="sidebar-tools">
+            <button class="tool-icon danger" onclick="closeServer()" title="Close Server"><i class="fa-solid fa-power-off"></i></button>
+            <button class="tool-icon" onclick="exitWorkspace()" title="Exit Workspace"><i class="fa-solid fa-arrow-left"></i></button>
+            <div class="divider"></div>
+            <div id="serverButtons"></div>
+        </div>
+        <div class="viewport-container" id="viewport">
+            <div id="loader"><div class="spinner" id="loaderSpinner"></div><p id="loaderText">Establishing connection...</p></div>
+            <iframe id="serverFrame" src="about:blank"></iframe>
+        </div>
+    </div>
 
-// Fullscreen button
-function addFullscreen(){
-    if(document.getElementById("fullscreenBtn")) return;
-    const b = document.createElement("button");
-    b.id = "fullscreenBtn";
-    b.textContent = "⛶";
-    b.style.cssText = `
-        position:fixed;bottom:10px;right:10px;
-        z-index:999999;background:#1a73e8;color:#fff;
-        border:none;padding:6px 10px;font-size:18px;
-        cursor:pointer;border-radius:6px;
-    `;
-    b.onclick = toggleFullscreen;
-    document.body.appendChild(b);
-}
+    <script>
+        let userPlan = 'Bronze';
+        
+        const credentials = {
+            Bronze: 'xoxo',
+            Silver: 'godlol',
+            Gold: 'broke',
+            Premium: 'richboy',
+            Admin: 'adminpass'
+        };
 
-function toggleFullscreen(){
-    const b = document.getElementById("fullscreenBtn");
-    if(!document.fullscreenElement){
-        document.documentElement.requestFullscreen();
-    }
-    if(b) b.remove();
-}
+        function checkPassword() {
+            const pass = document.getElementById('passwordInput').value.trim().toLowerCase();
+            const err = document.getElementById('loginError');
+            const loginScreen = document.getElementById('loginScreen');
+            const authScreen = document.getElementById('authScreen');
 
-document.addEventListener("fullscreenchange", ()=>{
-    if(!document.fullscreenElement) addFullscreen();
-});
+            let valid = false;
+            if (pass === credentials.Bronze) {
+                userPlan = 'Bronze';
+                valid = true;
+            } else if (pass === credentials.Silver) {
+                userPlan = 'Silver';
+                valid = true;
+            } else if (pass === credentials.Gold) {
+                userPlan = 'Gold';
+                valid = true;
+            } else if (pass === credentials.Premium) {
+                userPlan = 'Premium';
+                valid = true;
+            } else if (pass === credentials.Admin) {
+                userPlan = 'Admin';
+                valid = true;
+            }
 
-function restore(){
-    document.open();
-    document.write(sessionStorage.getItem("launcherHTML"));
-    document.close();
-}
-</script>
+            if (valid) {
+                err.textContent = '';
+                loginScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loginScreen.style.display = 'none';
+                    authScreen.style.display = 'flex';
+                    runAuthSequence();
+                }, 500);
+            } else {
+                err.textContent = 'Incorrect password. Try again.';
+                document.getElementById('passwordInput').focus();
+            }
+        }
 
+        function applyPermissions() {
+            const btnSynapse = document.getElementById('btnSynapse');
+            const btnDoge = document.getElementById('btnDoge');
+            const btnLucide = document.getElementById('btnLucide');
+            const planBadge = document.getElementById('planBadge');
+            const bigPlanBannerText = document.getElementById('bigPlanBannerText');
+            const sidePlanAdmin = document.getElementById('sidePlanAdmin');
+            const adminPasswordsList = document.getElementById('adminPasswordsList');
+            const dashboardBanner = document.getElementById('dashboardBanner');
+
+            planBadge.innerHTML = `<i class="fa-solid fa-shield-halved"></i> Plan: ${userPlan}`;
+            bigPlanBannerText.textContent = `Plan: ${userPlan}`;
+
+            // Reset banner & text themes
+            bigPlanBannerText.className = '';
+            dashboardBanner.style.borderColor = 'rgba(56,189,248,0.2)';
+            dashboardBanner.style.background = 'rgba(56,189,248,0.05)';
+
+            if (userPlan === 'Bronze') {
+                bigPlanBannerText.classList.add('tier-bronze-theme');
+                dashboardBanner.style.borderColor = 'rgba(205, 127, 50, 0.3)';
+                dashboardBanner.style.background = 'rgba(205, 127, 50, 0.05)';
+            } else if (userPlan === 'Silver') {
+                bigPlanBannerText.classList.add('tier-silver-theme');
+                dashboardBanner.style.borderColor = 'rgba(148, 163, 184, 0.3)';
+                dashboardBanner.style.background = 'rgba(148, 163, 184, 0.05)';
+            } else if (userPlan === 'Gold') {
+                bigPlanBannerText.classList.add('tier-gold-theme');
+                dashboardBanner.style.borderColor = 'rgba(251, 191, 36, 0.3)';
+                dashboardBanner.style.background = 'rgba(251, 191, 36, 0.05)';
+            } else if (userPlan === 'Premium') {
+                bigPlanBannerText.classList.add('tier-premium-theme');
+                dashboardBanner.style.borderColor = 'rgba(168, 85, 247, 0.3)';
+                dashboardBanner.style.background = 'rgba(168, 85, 247, 0.05)';
+            } else if (userPlan === 'Admin') {
+                bigPlanBannerText.classList.add('tier-admin-theme');
+                dashboardBanner.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+                dashboardBanner.style.background = 'rgba(239, 68, 68, 0.05)';
+            }
+
+            // Reset side plans highlight & apply individual color themes
+            document.querySelectorAll('.side-plan-card').forEach(card => {
+                card.classList.remove('active-side-plan', 'bronze', 'silver', 'gold', 'premium', 'admin');
+            });
+            
+            if (userPlan === 'Bronze') { document.getElementById('sidePlanBronze').classList.add('active-side-plan', 'bronze'); }
+            if (userPlan === 'Silver') { document.getElementById('sidePlanSilver').classList.add('active-side-plan', 'silver'); }
+            if (userPlan === 'Gold') { document.getElementById('sidePlanGold').classList.add('active-side-plan', 'gold'); }
+            if (userPlan === 'Premium') { document.getElementById('sidePlanPremium').classList.add('active-side-plan', 'premium'); }
+            
+            if (userPlan === 'Admin') {
+                sidePlanAdmin.style.display = 'flex';
+                sidePlanAdmin.classList.add('active-side-plan', 'admin');
+                adminPasswordsList.innerHTML = `
+                    <span class="tier-bronze-theme">Bronze: ${credentials.Bronze}</span><br>
+                    <span class="tier-silver-theme">Silver: ${credentials.Silver}</span><br>
+                    <span class="tier-gold-theme">Gold: ${credentials.Gold}</span><br>
+                    <span class="tier-premium-theme">Premium: ${credentials.Premium}</span><br>
+                    <span class="tier-admin-theme">Admin: ${credentials.Admin}</span>
+                `;
+            }
+
+            if (userPlan === 'Bronze') {
+                btnSynapse.style.display = 'none';
+                btnLucide.style.display = 'none';
+            } else if (userPlan === 'Silver') {
+                btnSynapse.style.display = 'none';
+            } else if (userPlan === 'Gold') {
+                // Gold can access all, 1 synapse handled in render
+            } else if (userPlan === 'Premium' || userPlan === 'Admin') {
+                // Everything unlocked
+            }
+        }
+
+        function runAuthSequence() {
+            const authText = document.getElementById('authText');
+            const authSpinner = document.getElementById('authSpinner');
+            const authScreen = document.getElementById('authScreen');
+            const dashboard = document.getElementById('mainDashboard');
+            const sidePlansPanel = document.getElementById('sidePlansPanel');
+
+            setTimeout(() => {
+                authText.textContent = 'Authenticating user if verified.';
+                
+                setTimeout(() => {
+                    authSpinner.style.display = 'none';
+                    authText.innerHTML = '<i class="fa-solid fa-circle-check" style="color: #22c55e; font-size: 1.2rem;"></i> Verified Successfully';
+                    
+                    applyPermissions();
+
+                    setTimeout(() => {
+                        authScreen.style.opacity = '0';
+                        setTimeout(() => {
+                            authScreen.style.display = 'none';
+                            dashboard.classList.add('visible');
+                            sidePlansPanel.classList.add('visible');
+                        }, 500);
+                    }, 600);
+                }, 1000);
+            }, 800);
+        }
+
+        const synapseLinks = [
+            "https://esm.sh/gh/blockfreeubg/synapse-lite/260430.svg",
+            "https://jsd.onmicrosoft.cn/gh/blockfreeubg/synapse-lite/260430.svg",
+            "https://cdn.jsdmirror.com/gh/blockfreeubg/synapse-lite/260430.svg"
+        ];
+        const dogeLinks = [
+            "https://storage.googleapis.com/dogeub/index.html",
+            "https://storage.googleapis.com/canvas-lms/index.html",
+            "https://storage.googleapis.com/educationate/index.html"
+        ];
+        const lucideLinks = ["https://unpkg.com/browselucide@1.0.3/logo.svg"];
+        
+        let currentLinks = synapseLinks;
+        let activeIdx = 0;
+        let currentPlatformType = 0;
+
+        const container = document.getElementById('serverButtons');
+        const ws = document.getElementById('workspace');
+        const ld = document.getElementById('loader');
+        const lt = document.getElementById('loaderText');
+        const sp = document.getElementById('loaderSpinner');
+        const viewport = document.getElementById('viewport');
+
+        function renderButtons() {
+            container.innerHTML = '';
+            
+            let activeableLinks = currentLinks;
+            if (userPlan === 'Bronze' && currentPlatformType === 1) {
+                activeableLinks = [dogeLinks[0]];
+            } else if (userPlan === 'Gold' && currentPlatformType === 0) {
+                activeableLinks = [synapseLinks[0]];
+            }
+
+            activeableLinks.forEach((_, i) => {
+                let extraClass = (currentPlatformType === 2) ? ' broken proxy' : '';
+                let titleAttr = (currentPlatformType === 2) ? 'Server 1 (Broken Proxy)' : `Server ${i + 1}`;
+                container.innerHTML += `<button class="tool-icon server-switcher${extraClass}" onclick="switchServer(${i})" title="${titleAttr}">S${i + 1}</button>`;
+            });
+        }
+
+        function updateActive(idx) {
+            document.querySelectorAll('.server-switcher').forEach((b, i) => b.classList.toggle('active-server', i === idx));
+        }
+
+        function recreateFrame() {
+            let oldFrame = document.getElementById('serverFrame');
+            if (oldFrame) oldFrame.remove();
+            
+            let newFrame = document.createElement('iframe');
+            newFrame.id = 'serverFrame';
+            newFrame.src = 'about:blank';
+            viewport.appendChild(newFrame);
+            return newFrame;
+        }
+
+        function loadFrame(idx) {
+            activeIdx = idx; 
+            updateActive(idx);
+            
+            ld.style.display = 'flex';
+            sp.style.display = 'block';
+            lt.textContent = 'Establishing connection...';
+
+            let targetLinks = currentLinks;
+            if (userPlan === 'Bronze' && currentPlatformType === 1) {
+                targetLinks = [dogeLinks[0]];
+            } else if (userPlan === 'Gold' && currentPlatformType === 0) {
+                targetLinks = [synapseLinks[0]];
+            }
+
+            let fr = recreateFrame();
+            fr.style.opacity = '0';
+            fr.src = targetLinks[activeIdx];
+
+            setTimeout(() => {
+                ld.style.display = 'none';
+                fr.style.opacity = '1';
+            }, 1200);
+        }
+
+        function initPlatform(type) {
+            currentPlatformType = type;
+            currentLinks = type === 0 ? synapseLinks : (type === 1 ? dogeLinks : lucideLinks);
+            renderButtons();
+            ws.style.display = 'flex';
+            loadFrame(0);
+        }
+
+        function switchServer(idx) { loadFrame(idx); }
+        
+        function closeServer() { 
+            let fr = document.getElementById('serverFrame');
+            if(fr) fr.src = 'about:blank'; 
+            ld.style.display = 'flex'; 
+            sp.style.display = 'none'; 
+            lt.textContent = 'Session terminated.'; 
+            updateActive(-1); 
+        }
+        
+        function exitWorkspace() { 
+            ws.style.display = 'none'; 
+            let fr = document.getElementById('serverFrame');
+            if(fr) fr.src = 'about:blank'; 
+            updateActive(-1); 
+        }
+    </script>
 </body>
 </html>
-
-  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let s = '';
-  for (let i = 0; i < 12; i++) {
-    s += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-
-  history.replaceState(null, '', '/lesson/' + s);
-</script>
-
-<script>
-  const googleFavicon = "https://play-lh.googleusercontent.com/RS6jyZBUhFUm_WEmMKZfu8vhRrfcrHwjc7NDkc5lc7O8ouTbj2ispXJYZ6cxC5bsvWQq";
-
-  function setGoogleTitleAndFavicon() {
-    document.title = "EduPortal | Lesson";
-
-    const existingIcons = document.querySelectorAll(
-      'link[rel="icon"], link[rel="shortcut icon"]'
-    );
-    existingIcons.forEach(icon => icon.remove());
-
-    const link = document.createElement('link');
-    link.rel = 'icon';
-    link.href = googleFavicon;
-    document.head.appendChild(link);
-  }
-
-  setGoogleTitleAndFavicon();
-  setInterval(setGoogleTitleAndFavicon, 500);
-</script>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let s = '';
-    for (let i = 0; i < 12; i++) {
-      s += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    history.replaceState(null, '', '/lesson/' + s);
-  });
-</script>
-
-
-<script>
-  const googleFavicon = "https://play-lh.googleusercontent.com/RS6jyZBUhFUm_WEmMKZfu8vhRrfcrHwjc7NDkc5lc7O8ouTbj2ispXJYZ6cxC5bsvWQq";
-
-  function setGoogleTitleAndFavicon() {
-    document.title = "EduPortal | Lesson";
-
-    const existingIcons = document.querySelectorAll(
-      'link[rel="icon"], link[rel="shortcut icon"]'
-    );
-    existingIcons.forEach(icon => icon.remove());
-
-    const link = document.createElement('link');
-    link.rel = 'icon';
-    link.href = googleFavicon;
-    document.head.appendChild(link);
-  }
-
-  setGoogleTitleAndFavicon();
-  setInterval(setGoogleTitleAndFavicon, 500);
-</script>
